@@ -9,7 +9,7 @@ import aws_cdk as cdk
 import boto3
 
 def test_keypair_exists(name: str):
-    ec2 = boto3.client("ec2")
+    ec2 = boto3.client("ec2",  region_name="eu-west-1")
     response = ec2.describe_key_pairs()
     key_pairs = response["KeyPairs"]
     for key_pair in key_pairs:
