@@ -22,17 +22,12 @@ class WordpressCdkAppStack(Stack):
             description="Allow SSH and HTTP traffic",
             allow_all_outbound=True
         )
-
-        ips_to_whitelist = ["213.217.252.207"]  # Replace with your IP address or range
-        # Allow SSH access from any IPv4 address (adjust if needed)
         
-        for ip_to_whitelist in ips_to_whitelist:
-            ip_to_whitelist += "/32"
-            security_group.add_ingress_rule(
-                ec2.Peer.ipv4(ip_to_whitelist), 
-                ec2.Port.tcp(22), 
-                "Allow SSH access"
-            )
+        security_group.add_ingress_rule(
+            ec2.Peer.any_ipv4(),  # Allows access from any IPv4 address
+            ec2.Port.tcp(22),   # Port 22 for SSH
+            "Allow SSH access"
+        )
 
         # Allow HTTP access from all IP addresses
         security_group.add_ingress_rule(
