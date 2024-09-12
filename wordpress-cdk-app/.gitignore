@@ -1,0 +1,86 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environment directories
+.venv/
+env/
+venv/
+
+# Distribution and packaging
+*.egg-info/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# pytest cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# IDE files
+*.suo
+*.ntvs_analysis.dat
+*.njsproj
+*.sln
+*.sw?
+*.sublime-workspace
+*.sublime-project
+
+# AWS CDK
+.cdk.staging/
+cdk.out/
+
+# Logs
+*.log
+
+# Environment variables files
+.env
+.env.*
+
+# Database
+*.sqlite3
+*.db
+*.db-journal
+
+# Backup files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Dependency directories
+node_modules/
+package-lock.json
+yarn.lock
+
+# Configuration files
+*.local
+
+# Coverage reports
+.coverage
+coverage.xml
+*.cover
+*.nib
+
+# Custom project-related files to ignore
+*.swp
