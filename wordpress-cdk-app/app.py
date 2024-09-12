@@ -10,6 +10,7 @@ if not account:
     raise ValueError("Environment variable 'CDK_DEFAULT_ACCOUNT' is not set.")
 
 app = cdk.App()
+print(f"Deploying app to region {region}")
 WordpressCdkAppStack(app, "WordpressCdkAppStack",
     env=cdk.Environment(account=account, region=region),
 )
