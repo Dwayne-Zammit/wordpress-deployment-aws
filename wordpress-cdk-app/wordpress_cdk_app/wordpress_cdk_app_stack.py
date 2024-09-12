@@ -34,13 +34,13 @@ class WordpressCdkAppStack(Stack):
                 "Allow SSH access"
             )
 
-            # Allow HTTP access only from a specific IP address or range
-            security_group.add_ingress_rule(
-                ec2.Peer.ipv4(ip_to_whitelist), 
-                ec2.Port.tcp(80), 
-                "Allow HTTP access from specific IP"
-            )
-
+        # Allow HTTP access from all IP addresses
+        security_group.add_ingress_rule(
+            ec2.Peer.any_ipv4(),  # Allows access from any IPv4 address
+            ec2.Port.tcp(80),     # Port 80 for HTTP
+            "Allow HTTP access from all IPs"
+        )
+    
         key_name = "wordpress-app-keypair"
         key_exists = test_keypair_exists(name=key_name)
 
