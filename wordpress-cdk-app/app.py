@@ -4,7 +4,7 @@ import aws_cdk as cdk
 from wordpress_cdk_app.wordpress_cdk_app_stack import WordpressCdkAppStack
 
 account = os.getenv('CDK_DEFAULT_ACCOUNT')
-region = os.getenv('CDK_DEFAULT_REGION', 'eu-west-1')  # Default to 'eu-west-1' if not set
+region = 'eu-west-1'
 
 if not account:
     raise ValueError("Environment variable 'CDK_DEFAULT_ACCOUNT' is not set.")
