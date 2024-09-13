@@ -4,7 +4,7 @@
 DB_NAME="wordpress"
 DB_USER="wordpressuser"
 DB_PASSWORD="wordpresspassword"
-S3_BUCKET="s3://your-s3-bucket-name"
+S3_BUCKET=aws cloudformation describe-stacks --stack-name WordpressCdkAppStack --query "Stacks[0].Outputs[?OutputKey=='S3BucketName'].OutputValue" --output text
 BACKUP_PATH="/tmp/mysql_backup"  # Temporary folder for the backup
 DATE=$(date +"%Y-%m-%d")
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
