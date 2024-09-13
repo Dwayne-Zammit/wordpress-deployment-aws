@@ -64,6 +64,7 @@ class WordpressCdkAppStack(Stack):
 
         # Define the S3 bucket
         bucket = s3.Bucket(self, "WordpressBackupBucket",
+            bucket_name="wordpress-backup-bucket",
             removal_policy=cdk.RemovalPolicy.DESTROY,
             auto_delete_objects=True  # This will delete all objects if the bucket is deleted
         )
@@ -93,7 +94,7 @@ class WordpressCdkAppStack(Stack):
                 "subnet_type": ec2.SubnetType.PUBLIC
             },
             user_data=user_data,
-            role=role  # Attach the IAM role to the instance
+            role=role
         )
 
         # Output the public IP of the instance
