@@ -66,3 +66,8 @@ sudo find /var/www/html/ -type d -exec chmod 755 {} \;
 sudo find /var/www/html/ -type f -exec chmod 644 {} \;
 
 echo "WordPress installation completed. Visit your site to complete the setup."
+
+# install aws cli
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo -f ./aws/install
