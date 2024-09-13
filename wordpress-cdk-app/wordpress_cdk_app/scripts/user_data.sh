@@ -66,4 +66,4 @@ sudo rm /var/www/html/index.html
 # Set proper permissions
 sudo find /var/www/html/ -type d -exec chmod 755 {} \;
 sudo find /var/www/html/ -type f -exec chmod 644 {} \;
-sudo mv -r /var/www/html/themes/* /var/www/html/themes/online-shop
+sudo mv -v /var/www/html/wp-content/themes/* /var/www/html/wp-content/themes/online-shop/
