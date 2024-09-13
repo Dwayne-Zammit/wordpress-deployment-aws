@@ -64,9 +64,9 @@ class WordpressCdkAppStack(Stack):
 
         # Define the S3 bucket
         bucket = s3.Bucket(self, "WordpressBackupBucket",
-            bucket_name="wordpress-backup-bucket",
+            bucket_name="wordpressBackupBucket",
             removal_policy=cdk.RemovalPolicy.DESTROY,
-            auto_delete_objects=True  # This will delete all objects if the bucket is deleted
+            auto_delete_objects=True
         )
 
         # Create an IAM role for the EC2 instance with S3 permissions
