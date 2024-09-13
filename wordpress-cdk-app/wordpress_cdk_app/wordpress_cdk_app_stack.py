@@ -79,6 +79,12 @@ class WordpressCdkAppStack(Stack):
             resources=[bucket.bucket_arn, f"{bucket.bucket_arn}/*"]
         ))
 
+        # Add CloudFormation DescribeStacks permission
+        role.add_to_policy(iam.PolicyStatement(
+            actions=["cloudformation:DescribeStacks"],
+            resources=["*"]  # Grant access to all stacks
+        ))
+        
         # Attach the role to the EC2 instance
         instance = ec2.Instance(
             self, "WordpressEC2Instance",
