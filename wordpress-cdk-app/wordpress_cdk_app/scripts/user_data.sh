@@ -65,4 +65,4 @@ sudo rm /var/www/html/index.html
 sudo find /var/www/html/ -type d -exec chmod 755 {} \;
 sudo find /var/www/html/ -type f -exec chmod 644 {} \;
 
-echo "WordPress installation completed. Visit your site to complete the setup."
+echo "WordPress installation completed. Visit your site to complete the setup..."
