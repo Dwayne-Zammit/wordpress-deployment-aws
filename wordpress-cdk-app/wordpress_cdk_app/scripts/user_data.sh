@@ -43,6 +43,26 @@ sed -i "s/database_name_here/wordpress/" /var/www/html/wp-config.php
 sed -i "s/username_here/wordpressuser/" /var/www/html/wp-config.php
 sed -i "s/password_here/wordpresspassword/" /var/www/html/wp-config.php
 
+# Install WP-CLI
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+mv wp-cli.phar /usr/local/bin/wp
+
+# Configure WordPress and complete installation
+wp core config --path=/var/www/html/ --dbname=wordpress --dbuser=wordpressuser --dbpass=wordpresspassword --dbhost=localhost --dbprefix=wp_
+
+# Install WordPress with WP-CLI
+wp core install --path=/var/www/html/ --url="http://localhost" --title="WIS Site" --admin_user="admin" --admin_password="adminpassword" --admin_email="admin@example.com"
+
+# create an additional user
+wp user create user user@example.com --user_pass=userpassword --role=author --path=/var/www/html/
+
+echo "WordPress installation completed. Visit your site to complete the setup."
+
 # Restart Apache to apply changes
 systemctl restart apache2
 sudo rm /var/www/html/index.html
+
+# Set proper permissions
+sudo find /var/www/html/ -type d -exec chmod 755 {} \;
+sudo find /var/www/html/ -type f -exec chmod 644 {} \;
