@@ -1,7 +1,9 @@
 from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
-    CfnOutput
+    aws_s3 as s3,
+    aws_iam as iam,
+    CfnOutput,
 )
 from constructs import Construct
 import aws_cdk as cdk
@@ -13,9 +15,9 @@ class WordpressCdkAppStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Define the VPC
-        vpc = ec2.Vpc(self, "MyVpc", max_azs=1)  # Max 1 Availability Zone for free tier
+        vpc = ec2.Vpc(self, "MyVpc", max_azs=1)
 
-        # Define the security group
+        # Define the security group to allow all ssh and http
         security_group = ec2.SecurityGroup(
             self, "WordpressAppSecurityGroup",
             vpc=vpc,
@@ -24,18 +26,18 @@ class WordpressCdkAppStack(Stack):
         )
         
         security_group.add_ingress_rule(
-            ec2.Peer.any_ipv4(),  # Allows access from any IPv4 address
-            ec2.Port.tcp(22),   # Port 22 for SSH
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(22),
             "Allow SSH access"
         )
 
         # Allow HTTP access from all IP addresses
         security_group.add_ingress_rule(
-            ec2.Peer.any_ipv4(),  # Allows access from any IPv4 address
-            ec2.Port.tcp(80),     # Port 80 for HTTP
+            ec2.Peer.any_ipv4(),
+            ec2.Port.tcp(80),
             "Allow HTTP access from all IPs"
         )
-    
+        
         key_name = "wordpress-app-keypair"
         key_exists = test_keypair_exists(name=key_name)
 
@@ -60,8 +62,24 @@ class WordpressCdkAppStack(Stack):
         user_data = ec2.UserData.for_linux()
         user_data.add_commands(user_data_script)
 
+        # Define the S3 bucket
+        bucket = s3.Bucket(self, "WordpressBackupBucket",
+            removal_policy=cdk.RemovalPolicy.DESTROY,
+            auto_delete_objects=True  # This will delete all objects if the bucket is deleted
+        )
 
-        # Define the EC2 instance
+        # Create an IAM role for the EC2 instance with S3 permissions
+        role = iam.Role(self, "EC2S3AccessRole",
+            assumed_by=iam.ServicePrincipal("ec2.amazonaws.com")
+        )
+
+        # Attach S3 access policy to the role
+        role.add_to_policy(iam.PolicyStatement(
+            actions=["s3:PutObject", "s3:GetObject", "s3:ListBucket"],
+            resources=[bucket.bucket_arn, f"{bucket.bucket_arn}/*"]
+        ))
+
+        # Attach the role to the EC2 instance
         instance = ec2.Instance(
             self, "WordpressEC2Instance",
             instance_type=ec2.InstanceType("t2.micro"),  # Free tier eligible
@@ -75,11 +93,19 @@ class WordpressCdkAppStack(Stack):
                 "subnet_type": ec2.SubnetType.PUBLIC
             },
             user_data=user_data,
+            role=role  # Attach the IAM role to the instance
         )
 
-        # Output the public IP
-        output = CfnOutput(
+        # Output the public IP of the instance
+        CfnOutput(
             self, "InstancePublicIp",
             value=instance.instance_public_ip,
             description="The public IP address of the EC2 instance"
+        )
+
+        # Output the name of the S3 bucket
+        CfnOutput(
+            self, "S3BucketName",
+            value=bucket.bucket_name,
+            description="The name of the S3 bucket for backups"
         )
