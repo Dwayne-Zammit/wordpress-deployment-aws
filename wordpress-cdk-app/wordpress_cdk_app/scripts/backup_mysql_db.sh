@@ -4,7 +4,10 @@
 DB_NAME="wordpress"
 DB_USER="wordpressuser"
 DB_PASSWORD="wordpresspassword"
-S3_BUCKET=aws cloudformation describe-stacks --stack-name WordpressCdkAppStack --query "Stacks[0].Outputs[?OutputKey=='S3BucketName'].OutputValue" --output text
+S3_BUCKET=$(aws cloudformation describe-stacks \
+  --stack-name WordpressCdkAppStack \
+  --query "Stacks[0].Outputs[?OutputKey=='S3BucketName'].OutputValue" \
+  --output text)
 BACKUP_PATH="/tmp/mysql_backup"  # Temporary folder for the backup
 DATE=$(date +"%Y-%m-%d")
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
@@ -28,8 +31,8 @@ else
 fi
 
 # Step 2: Upload the backup file to S3
-echo "Uploading $BACKUP_FILE to S3 bucket: $S3_BUCKET"
-aws s3 cp $BACKUP_FILE $S3_BUCKET
+echo "Uploading $BACKUP_FILE to S3 bucket: s3://$S3_BUCKET"
+aws s3 cp $BACKUP_FILE "s3://$S3_BUCKET"
 
 # Check if the upload succeeded
 if [ $? -eq 0 ]; then
@@ -38,10 +41,6 @@ else
   echo "Error uploading to S3" | tee -a $LOG_FILE
   exit 1
 fi
-
-# Step 3: Remove the temporary backup directory and its contents
-echo "Removing temporary backup directory: $BACKUP_PATH"
-rm -rf $BACKUP_PATH
 
 # Log completion
 echo "Backup script completed at $(date)" | tee -a $LOG_FILE
