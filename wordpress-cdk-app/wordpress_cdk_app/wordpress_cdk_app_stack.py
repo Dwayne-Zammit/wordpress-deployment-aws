@@ -64,7 +64,6 @@ class WordpressCdkAppStack(Stack):
 
         # Define the S3 bucket
         bucket = s3.Bucket(self, "WordpressBackupBucket",
-            bucket_name="wordpressbackupbucket",
             removal_policy=cdk.RemovalPolicy.DESTROY,
             auto_delete_objects=True
         )
