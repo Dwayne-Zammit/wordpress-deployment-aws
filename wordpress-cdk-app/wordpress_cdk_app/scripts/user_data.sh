@@ -57,8 +57,6 @@ sudo -u ubuntu wp core install --path=/var/www/html/ --url="http://localhost" --
 # create an additional user
 sudo -u ubuntu wp user create user user@example.com --user_pass=userpassword --role=author --path=/var/www/html/
 
-echo "WordPress installation completed. Visit your site to complete the setup."
-
 # Restart Apache to apply changes
 systemctl restart apache2
 sudo rm /var/www/html/index.html
@@ -66,4 +64,5 @@ sudo rm /var/www/html/index.html
 # Set proper permissions
 sudo find /var/www/html/ -type d -exec chmod 755 {} \;
 sudo find /var/www/html/ -type f -exec chmod 644 {} \;
-sudo mv -v /var/www/html/wp-content/themes/* /var/www/html/wp-content/themes/online-shop/
+
+echo "WordPress installation completed. Visit your site to complete the setup."
