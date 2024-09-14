@@ -39,9 +39,12 @@ Run mysqldump Command
 
 Use the following command to create a backup of the WordPress MySQL database:
 
-bash
+bash```
 
+
+```bash
 mysqldump --no-tablespaces -h [EC2_PUBLIC_IP] -u [DB_USER] -p[DB_PASSWORD] [DB_NAME] > [BACKUP_FILE].sql
+bash```
 
 Replace the placeholders with the appropriate values:
 
@@ -53,9 +56,9 @@ Replace the placeholders with the appropriate values:
 
 Example:
 
-bash
-
+```bash
 mysqldump --no-tablespaces -h 52.31.56.237 -u wordpressuser -pwordpresspassword wordpress > backup_file.sql
+bash```
 
 This command will create a file named backup_file.sql containing the SQL dump of your WordPress database.
 Additional Information
