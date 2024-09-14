@@ -30,6 +30,14 @@ mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'localhost' IDENTIFIED 
 mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'localhost';"
 mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
+
+# allow all hosts to connect to db.
+CONFIG_FILE="/etc/mysql/mysql.conf.d/mysqld.cnf"
+sed -i 's/^bind-address.*/bind-address = 0.0.0.0/' $CONFIG_FILE
+echo "MySQL bind-address updated to 0.0.0.0"
+sudo systemctl restart mysql
+
+echo "MySQL service restarted"
 # Download and set up WordPress
 wget https://wordpress.org/latest.tar.gz
 tar -xzf latest.tar.gz
