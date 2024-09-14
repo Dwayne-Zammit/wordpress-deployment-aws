@@ -26,8 +26,9 @@ EOF
 
 # Create WordPress database and user
 mysql -u root -ppassword -e "CREATE DATABASE wordpress;"
-mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'*' IDENTIFIED BY 'wordpresspassword';"
-mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'*';"
+mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'%' IDENTIFIED BY 'wordpresspassword';"
+mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'%';"
+mysql -u root -ppassword -e "GRANT PROCESS ON *.* TO 'wordpressuser'@'%';"
 mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
 # allow all hosts to connect to db.
@@ -75,6 +76,32 @@ sudo find /var/www/html/ -type f -exec chmod 644 {} \;
 echo "WordPress installation completed. Visit your site to complete the setup."
 
 # install aws cli
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo -f ./aws/install
+# Define the URL for the AWS CLI installation package
+CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+ZIP_FILE="awscliv2.zip"
+INSTALL_DIR="./aws"
+
+# Function to install AWS CLI
+install_aws_cli() {
+    echo "Installing AWS CLI..."
+    curl "$CLI_URL" -o "$ZIP_FILE"
+    unzip -o "$ZIP_FILE"
+    sudo ./aws/install
+    rm -rf "$ZIP_FILE" "$INSTALL_DIR"
+}
+
+# Check if AWS CLI is installed
+if command -v aws &> /dev/null; then
+    echo "AWS CLI is already installed. Updating..."
+    # Check if there's an update available
+    aws --version
+    echo "Updating AWS CLI..."
+    install_aws_cli
+else
+    echo "AWS CLI is not installed."
+    install_aws_cli
+fi
+
+# Verify the installation
+echo "AWS CLI version:"
+aws --version
