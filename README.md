@@ -24,10 +24,13 @@ User Data Script
 The user-data script is executed upon the first launch of the EC2 instance. It installs WordPress and MySQL, and configures the application.
 Deploying via GitHub Actions
 
-The deployment process is automated using GitHub Actions. Ensure your GitHub Actions workflows are correctly set up to handle deployment tasks.
+The deployment process is automated using GitHub Actions.
 Bootstrapping WordPress
 
-After deployment, you may need to bootstrap the WordPress application using additional steps defined in your GitHub Actions workflows.
+Upon deployment, there are steps in git actions which bootstraps the WordPress application.
+
+The system is provisioned with a cronjob which performs a backup on the mysql db every 7 days and uploads to s3.
+
 Backing Up MySQL Database Locally
 
 To back up the MySQL database locally, follow these steps:
