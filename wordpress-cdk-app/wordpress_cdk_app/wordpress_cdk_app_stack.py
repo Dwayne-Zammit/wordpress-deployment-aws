@@ -41,7 +41,7 @@ class WordpressCdkAppStack(Stack):
         # Allow mysql access from all IP addresses
         security_group.add_ingress_rule(
             ec2.Peer.any_ipv4(),
-            ec2.Port.tcp(3309),
+            ec2.Port.tcp(3306),
             "Allow mysql access from all IPs"
         )
         
