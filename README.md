@@ -1,21 +1,20 @@
-# WordPress Deployment on AWS EC2 using Python CDK
+WordPress Deployment on AWS EC2 using Python CDK
 
-This repository provides a setup for deploying a WordPress application on an AWS EC2 server using Python CDK. The deployment includes installing WordPress and MySQL via a user-data script during the first deployment. Additionally, the deployment is managed via GitHub Actions.
+This repository provides a setup for deploying a WordPress application on an AWS EC2 server using Python CDK. The deployment includes installing WordPress and MySQL via a user-data script during the initial launch. Additionally, the deployment is managed via GitHub Actions.
+Prerequisites
 
-## Prerequisites
+    AWS CLI: Ensure that you have the AWS CLI installed and configured with your AWS credentials.
+    Python 3.x: Required for Python CDK.
+    AWS CDK: Ensure that you have the AWS CDK installed.
+    GitHub Actions: For CI/CD pipeline management.
 
-- **AWS CLI**: Ensure that you have the AWS CLI installed and configured with your AWS credentials.
-- **Python 3.x**: Required for Python CDK.
-- **AWS CDK**: Ensure that you have the AWS CDK installed.
-- **GitHub Actions**: For CI/CD pipeline management.
-
-## Deployment
-
-### Provision Infrastructure with CDK
+Deployment
+Provision Infrastructure with CDK
 
 Ensure you have Python and AWS CDK installed. Then, use the following commands to deploy the infrastructure:
 
-```bash
+bash
+
 cdk bootstrap
 cdk deploy
 
@@ -25,7 +24,7 @@ User Data Script
 The user-data script is executed upon the first launch of the EC2 instance. It installs WordPress and MySQL, and configures the application.
 Deploying via GitHub Actions
 
-The deployment process is automated using GitHub Actions. Ensure your GitHub Actions workflows are set up correctly to handle deployment tasks.
+The deployment process is automated using GitHub Actions. Ensure your GitHub Actions workflows are correctly set up to handle deployment tasks.
 Bootstrapping WordPress
 
 After deployment, you may need to bootstrap the WordPress application using additional steps defined in your GitHub Actions workflows.
@@ -39,12 +38,9 @@ Run mysqldump Command
 
 Use the following command to create a backup of the WordPress MySQL database:
 
-bash```
+bash
 
-
-```bash
 mysqldump --no-tablespaces -h [EC2_PUBLIC_IP] -u [DB_USER] -p[DB_PASSWORD] [DB_NAME] > [BACKUP_FILE].sql
-bash```
 
 Replace the placeholders with the appropriate values:
 
@@ -56,9 +52,9 @@ Replace the placeholders with the appropriate values:
 
 Example:
 
-```bash
+bash
+
 mysqldump --no-tablespaces -h 52.31.56.237 -u wordpressuser -pwordpresspassword wordpress > backup_file.sql
-bash```
 
 This command will create a file named backup_file.sql containing the SQL dump of your WordPress database.
 Additional Information
