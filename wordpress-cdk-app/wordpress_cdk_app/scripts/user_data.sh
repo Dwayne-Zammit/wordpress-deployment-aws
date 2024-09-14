@@ -26,10 +26,9 @@ EOF
 
 # Create WordPress database and user
 mysql -u root -ppassword -e "CREATE DATABASE wordpress;"
-mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'localhost' IDENTIFIED BY 'wordpresspassword';"
-mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'localhost';"
+mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'*' IDENTIFIED BY 'wordpresspassword';"
+mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpressuser'@'*';"
 mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
-
 
 # allow all hosts to connect to db.
 CONFIG_FILE="/etc/mysql/mysql.conf.d/mysqld.cnf"
