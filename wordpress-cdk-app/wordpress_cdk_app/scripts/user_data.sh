@@ -52,7 +52,7 @@ chmod -R 755 /var/www/html/
 cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 sed -i "s/database_name_here/wordpress/" /var/www/html/wp-config.php
 sed -i "s/username_here/$wordpress_username/" /var/www/html/wp-config.php
-sed -i "s/password_here/wordpresspassword/" /var/www/html/wp-config.php
+sed -i "s/password_here/$wordpress_password/" /var/www/html/wp-config.php
 
 # Install WP-CLI
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -60,13 +60,13 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # Configure WordPress and complete installation
-sudo -u ubuntu wp core config --path=/var/www/html/ --dbname=wordpress --dbuser=$wordpress_username --dbpass=$wordpress_password --dbhost=localhost --dbprefix=wp_
+sudo -u $wordpress_username wp core config --path=/var/www/html/ --dbname=wordpress --dbuser=$wordpress_username --dbpass=$wordpress_password --dbhost=localhost --dbprefix=wp_
 
 # Install WordPress with WP-CLI
-sudo -u ubuntu wp core install --path=/var/www/html/ --url="http://localhost" --title="WIS Site" --admin_user="admin" --admin_password="adminpassword" --admin_email="admin@example.com"
+sudo -u $wordpress_username wp core install --path=/var/www/html/ --url="http://localhost" --title="WIS Site" --admin_user="admin" --admin_password="adminpassword" --admin_email="admin@example.com"
 
 # create an additional user
-sudo -u ubuntu wp user create user user@example.com --user_pass=userpassword --role=author --path=/var/www/html/
+sudo -u $wordpress_username wp user create user user@example.com --user_pass=userpassword --role=author --path=/var/www/html/
 
 # Restart Apache to apply changes
 systemctl restart apache2
