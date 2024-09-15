@@ -29,9 +29,9 @@ echo "username for wordpress user is: $wordpress_username"
 echo "username for wordpress user is: $wordpress_password"
 # Create WordPress database and user
 mysql -u root -ppassword -e "CREATE DATABASE wordpress;"
-mysql -u root -ppassword -e "CREATE USER $wordpress_username@'%' IDENTIFIED BY $wordpress_password;"
-mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO $wordpress_username@'%';"
-mysql -u root -ppassword -e "GRANT PROCESS ON *.* TO $wordpress_username@'%';"
+mysql -u root -ppassword -e "CREATE USER '$wordpress_username'@'%' IDENTIFIED BY '$wordpress_password';"
+mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON wordpress.* TO '$wordpress_username'@'%';"
+mysql -u root -ppassword -e "GRANT PROCESS ON *.* TO '$wordpress_username'@'%';"
 mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
 # allow all hosts to connect to db.
