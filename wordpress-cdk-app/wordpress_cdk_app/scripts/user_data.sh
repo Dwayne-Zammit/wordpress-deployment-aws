@@ -23,7 +23,8 @@ y
 y
 y
 EOF
-
+username=${USERNAME}
+echo "username for wordpress user is: $username"
 # Create WordPress database and user
 mysql -u root -ppassword -e "CREATE DATABASE wordpress;"
 mysql -u root -ppassword -e "CREATE USER 'wordpressuser'@'%' IDENTIFIED BY 'wordpresspassword';"
