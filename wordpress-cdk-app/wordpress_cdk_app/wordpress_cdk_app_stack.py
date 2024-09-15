@@ -95,7 +95,7 @@ class WordpressCdkAppStack(Stack):
         # Attach the role to the EC2 instance
         instance = ec2.Instance(
             self, "WordpressEC2Instance",
-            instance_type=ec2.InstanceType("t2.small"),  # Free tier eligible
+            instance_type=ec2.InstanceType("t3.micro"),  # Free tier eligible
             machine_image=ec2.MachineImage.generic_linux({
                 "eu-west-1": "ami-03cc8375791cb8bcf"
             }),
