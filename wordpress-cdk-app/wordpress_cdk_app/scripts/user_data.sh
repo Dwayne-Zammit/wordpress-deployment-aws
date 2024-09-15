@@ -60,13 +60,13 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 # Configure WordPress and complete installation
-sudo -u $wordpress_username wp core config --path=/var/www/html/ --dbname=wordpress --dbuser=$wordpress_username --dbpass=$wordpress_password --dbhost=localhost --dbprefix=wp_
+sudo -u ubuntu wp core config --path=/var/www/html/ --dbname=wordpress --dbuser=$wordpress_username --dbpass=$wordpress_password --dbhost=localhost --dbprefix=wp_
 
 # Install WordPress with WP-CLI
-sudo -u $wordpress_username wp core install --path=/var/www/html/ --url="http://localhost" --title="WIS Site" --admin_user=$wordpress_username --admin_password=$wordpress_password --admin_email="admin@example.com"
+sudo -u ubuntu wp core install --path=/var/www/html/ --url="http://localhost" --title="WIS Site" --admin_user=$wordpress_username --admin_password=$wordpress_password --admin_email="admin@example.com"
 
 # create an additional user
-sudo -u $wordpress_username wp user create user user@example.com --user_pass=$wordpress_password --role=author --path=/var/www/html/
+sudo -u ubuntu wp user create user user@example.com --user_pass=$wordpress_password --role=author --path=/var/www/html/
 
 # Restart Apache to apply changes
 systemctl restart apache2
