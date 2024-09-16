@@ -77,6 +77,18 @@ This command connects to the MySQL server at 52.31.56.237, uses the wordpressuse
 - **Automation**: The automation of deployment and backups enhances operational efficiency and reduces manual errors.
 - **Testing**: Health checks provide assurance that the WordPress site is functioning correctly after updates.
 - **Server Configuration**: NGINX/SSL configuration should be performed to increase security.
+
+## 5. GitHub Secrets Configuration
+
+To ensure the CI/CD pipeline operates correctly, you need to configure the following secrets in your GitHub repository settings:
+
+- **AWS_ACCESS_KEY_ID**: Your AWS Access Key ID.
+- **AWS_ACCOUNT_ID**: Your AWS Account ID.
+- **AWS_SECRET_ACCESS_KEY**: Your AWS Secret Access Key.
+- **SERVER_SSH_KEY**: The SSH private key for accessing the server.
+- **SERVER_USER**: The username for SSH access to the server.
+- **WORDPRESSPASSWORD**: The password for the WordPress database.
+- **WORDPRESSUSERNAME**: The username for the WordPress database.
 ## Conclusion
 
 This setup provides a robust solution for deploying and managing a WordPress application. By leveraging CI/CD pipelines, automated backups, the deployment process is streamlined, reliable, and efficient.
