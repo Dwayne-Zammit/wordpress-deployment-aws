@@ -9,7 +9,7 @@ This document outlines the deployment process for a WordPress project using a CI
 ### EC2 Instance
 
 - **Instance Creation**: An EC2 instance was created using AWS CDK (Python) to host the WordPress application.
-- **Security Groups**: Ports 80 (HTTP) and 22 (SSH) were configured to allow web traffic and remote access.
+- **Security Groups**: Ports 80 (HTTP) and 22 (SSH) were configured to allow web traffic and remote access from all IPS.
 
 ### S3 Bucket
 
