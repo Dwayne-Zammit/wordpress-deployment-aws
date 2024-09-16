@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Variables
-DB_NAME="wordpress"
-DB_USER="wordpressuser"
+# DB_NAME="wordpress"
+# DB_USER="wordpressuser"
+DB_NAME={{WORDPRESSUSERNAME}}
+DB_USER={{WORDPRESSPASSWORD}}
 DB_PASSWORD="wordpresspassword"
 S3_BUCKET=$(aws cloudformation describe-stacks \
   --stack-name WordpressCdkAppStack \
