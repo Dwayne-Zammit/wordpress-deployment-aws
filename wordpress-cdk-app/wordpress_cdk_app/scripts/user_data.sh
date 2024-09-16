@@ -70,7 +70,6 @@ sudo -u ubuntu wp user create user user@example.com --user_pass=$wordpress_passw
 
 # Restart Apache to apply changes
 systemctl restart apache2
-sudo rm /var/www/html/index.html
 
 # Set proper permissions
 sudo find /var/www/html/ -type d -exec chmod 755 {} \;

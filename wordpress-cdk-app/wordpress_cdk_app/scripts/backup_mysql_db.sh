@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Variables
-# DB_NAME="wordpress"
-# DB_USER="wordpressuser"
 DB_NAME={{WORDPRESSUSERNAME}}
 DB_USER={{WORDPRESSPASSWORD}}
 DB_PASSWORD="wordpresspassword"
