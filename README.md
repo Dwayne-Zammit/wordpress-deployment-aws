@@ -1,4 +1,4 @@
-# Deployment and CI/CD Documentation for WordPress Project
+# Deployment and CI/CD Documentation for WordPress Project for WIS DevOps Test
 
 ## Introduction
 
@@ -24,7 +24,7 @@ This document outlines the deployment process for a WordPress project using a CI
 
 ### Overview
 
-The CI/CD pipeline is managed using GitHub Actions. This automation tool helps streamline the deployment process by triggering actions on code changes.
+The CI/CD pipeline is managed using GitHub Actions. This automation tool helps streamline the deployment process by triggering actions on code changes in master branch.
 
 ### Key Steps
 
@@ -47,7 +47,7 @@ A GitHub Actions workflow is set up to automate the build, deployment, and testi
 
 The backup process involves regularly saving copies of the MySQL database to the S3 bucket. This ensures that data can be recovered in case of any issues or data loss. Backups are automated using a cron job on the EC2 instance, which runs at a scheduled time (e.g., daily).
 bash
-
+```
 mysqldump --no-tablespaces -h 52.31.56.237 -u wordpressuser -pwordpresspassword wordpress > backup_file.sql
 ```
 
