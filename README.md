@@ -1,69 +1,104 @@
-WordPress Deployment on AWS EC2 using Python CDK
+# Deployment and CI/CD Documentation for WordPress Project
 
-This repository provides a setup for deploying a WordPress application on an AWS EC2 server using Python CDK. The deployment includes installing WordPress and MySQL via a user-data script during the initial launch. Additionally, the deployment is managed via GitHub Actions.
-Prerequisites
+## Introduction
 
-    AWS CLI: Ensure that you have the AWS CLI installed and configured with your AWS credentials.
-    Python 3.x: Required for Python CDK.
-    AWS CDK: Ensure that you have the AWS CDK installed.
-    GitHub Actions: For CI/CD pipeline management.
+This document outlines the deployment process for a WordPress project using a CI/CD pipeline with GitHub Actions, including backup automation, health checks, and server configuration best practices. The project utilizes AWS resources and ensures efficient deployment and management of the WordPress application.
 
-Deployment
-Provision Infrastructure with CDK
+## 1. Project Setup
 
-Ensure you have Python and AWS CDK installed. Then, use the following commands to deploy the infrastructure:
+### EC2 Instance
 
-bash
+- **Instance Creation**: An EC2 instance was created using AWS CDK (Python) to host the WordPress application.
+- **Security Groups**: Ports 80 (HTTP) and 22 (SSH) were configured to allow web traffic and remote access.
 
-cdk bootstrap
-cdk deploy
+### S3 Bucket
 
-This will create the necessary AWS resources, including an EC2 instance for running WordPress.
-User Data Script
+- **Purpose**: An S3 bucket was set up to store backups of the MySQL database.
+- **Configuration**: The bucket was configured to be accessible by the WordPress application for backup purposes.
 
-The user-data script is executed upon the first launch of the EC2 instance. It installs WordPress and MySQL, and configures the application.
-Deploying via GitHub Actions
+### WordPress Installation
 
-The deployment process is automated using GitHub Actions.
-Bootstrapping WordPress
+- **Method**: WordPress was installed on the EC2 instance using a user data script. This installation includes the default WordPress setup, which ensures that the application is ready for further customization.
 
-Upon deployment, there are steps in git actions which bootstraps the WordPress application.
+## 2. CI/CD Pipeline Configuration
 
-The system is provisioned with a cronjob which performs a backup on the mysql db every 7 days and uploads to s3.
+### Overview
 
-Backing Up MySQL Database Locally
+The CI/CD pipeline is managed using GitHub Actions. This automation tool helps streamline the deployment process by triggering actions on code changes.
 
-To back up the MySQL database locally, follow these steps:
-Ensure MySQL Client is Installed
+### Key Steps
 
-Make sure you have the MySQL client installed on your local machine. You can install it using the package manager appropriate for your operating system.
-Run mysqldump Command
+- **Build Theme Assets**: The pipeline compiles the theme assets (SCSS and JS files). This step ensures that any changes to the theme are properly built before deployment.
+- **Deploy to Server**: The updated files are transferred to the EC2 instance. This is accomplished using `rsync`, which synchronizes the local files with the server.
+- **Check Response Code**: After deployment, a health check is performed to verify that the WordPress site is accessible and returns a status code of 200. This step ensures that the site is live and operational after updates.
 
-Use the following command to create a backup of the WordPress MySQL database:
+### GitHub Actions Workflow
 
-bash
+A GitHub Actions workflow is set up to automate the build, deployment, and testing processes. It includes:
 
-mysqldump --no-tablespaces -h [EC2_PUBLIC_IP] -u [DB_USER] -p[DB_PASSWORD] [DB_NAME] > [BACKUP_FILE].sql
+- **Checkout Code**: Retrieves the latest code from the repository.
+- **Build Theme Assets**: Compiles SCSS and JS files for the WordPress theme.
+- **Deploy to Server**: Uses `rsync` to deploy the updated files to the EC2 instance.
+- **Check WordPress Site Response Code**: Performs a health check to ensure the site is responding with a status code of 200.
 
-Replace the placeholders with the appropriate values:
+## 3. Backup Automation
 
-    [EC2_PUBLIC_IP]: The public IP address of your EC2 instance (e.g., 52.31.56.237).
-    [DB_USER]: Your MySQL username (e.g., wordpressuser).
-    [DB_PASSWORD]: Your MySQL password (e.g., wordpresspassword).
-    [DB_NAME]: The name of the database you want to back up (e.g., wordpress).
-    [BACKUP_FILE]: The name of the file to which the backup will be saved (e.g., backup_file).
+### Backup Process
 
-Example:
-
+The backup process involves regularly saving copies of the MySQL database to the S3 bucket. This ensures that data can be recovered in case of any issues or data loss. Backups are automated using a cron job on the EC2 instance, which runs at a scheduled time (e.g., daily).
 bash
 
 mysqldump --no-tablespaces -h 52.31.56.237 -u wordpressuser -pwordpresspassword wordpress > backup_file.sql
+```
 
-This command will create a file named backup_file.sql containing the SQL dump of your WordPress database.
-Additional Information
+This command connects to the MySQL server at 52.31.56.237, uses the wordpressuser account, and dumps the wordpress database to a file named backup_file.sql.
+Benefits
 
-For more details on configuring AWS CDK, GitHub Actions, or managing MySQL backups, refer to the official documentation:
+    Data Safety: Regular backups protect against data loss.
+    Automated Management: Automation reduces manual intervention and ensures consistent backup schedules.
 
-    AWS CDK Documentation
-    GitHub Actions Documentation
-    MySQL Documentation
+### Benefits
+
+- **Data Safety**: Regular backups protect against data loss.
+- **Automated Management**: Automation reduces manual intervention and ensures consistent backup schedules.
+
+## 4. Server Configuration Best Practices
+
+### Apache Configuration
+
+If Apache is used as the web server, here are some best practices for configuration:
+
+#### Virtual Hosts
+
+- **Setup Virtual Hosts**: Configure virtual hosts to manage multiple domains or applications on the same server. This includes setting up directives for each domain, specifying the document root, and configuring access controls.
+
+#### SSL Configuration
+
+- **Obtain SSL Certificates**: Use tools like Certbot to obtain and configure SSL certificates for secure HTTPS connections.
+- **Configure SSL**: Update the Apache configuration to include SSL directives, ensuring that HTTPS is enabled for the WordPress site.
+
+#### Security and Performance
+
+- **Security**: Implement security best practices, such as restricting access to sensitive directories and ensuring that file permissions are correctly set.
+- **Performance**: Optimize Apache settings for better performance, including configuring caching and compression.
+
+## 5. Documentation and Improvement Summary
+
+### GitHub Repository
+
+- **Repository**: The GitHub repository containing the CI/CD pipeline configuration, backup scripts, and other relevant files can be found here.
+
+### Decisions and Challenges
+
+- **CI/CD Setup**: Integrated automated deployments to ensure that updates are deployed smoothly and efficiently.
+- **Backup Automation**: Set up regular backups to an S3 bucket to safeguard data.
+- **Health Checks**: Implemented response code checks to confirm the operational status of the WordPress site after deployment.
+
+### Improvements
+
+- **Automation**: The automation of deployment and backups enhances operational efficiency and reduces manual errors.
+- **Testing**: Health checks provide assurance that the WordPress site is functioning correctly after updates.
+
+## Conclusion
+
+This setup provides a robust solution for deploying and managing a WordPress application. By leveraging CI/CD pipelines, automated backups, and best practices for server configuration, the deployment process is streamlined, reliable, and efficient.
