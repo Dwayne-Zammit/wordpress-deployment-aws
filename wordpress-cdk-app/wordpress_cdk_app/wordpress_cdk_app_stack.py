@@ -15,7 +15,7 @@ class WordpressCdkAppStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Define the VPC
-        vpc = ec2.Vpc(self, "MyVpc", max_azs=1)
+        vpc = ec2.Vpc(self, "MyVpc", max_azs=1, nat_gateways=0)
 
         # Define the security group to allow all ssh and http
         security_group = ec2.SecurityGroup(
